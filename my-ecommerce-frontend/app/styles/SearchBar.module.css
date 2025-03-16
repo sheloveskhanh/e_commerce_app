@@ -1,0 +1,22 @@
+.searchContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 600px;
+  padding: 10px 0;
+}
+
+.searchWrapper {
+  position: relative;
+  flex-grow: 1;
+}
+
+.searchBar {
+  width: 100%;
+  padding: 12px 12px 12px 35px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  outline: none;
+}
