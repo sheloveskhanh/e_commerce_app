@@ -1,5 +1,5 @@
-import ProductCard from "./ProductCard";
-import styles from "../styles/ProductList.module.css";
+import ProductCard from "../products/ProductCard"; 
+import styles from "../../styles/ProductList.module.css";
 
 interface Product {
   _id: string;

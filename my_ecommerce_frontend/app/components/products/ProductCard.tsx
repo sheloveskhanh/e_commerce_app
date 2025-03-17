@@ -1,5 +1,5 @@
 import Image from "next/image";
-import styles from "../styles/ProductCard.module.css";
+import styles from "../../styles/ProductCard.module.css";
 
 interface Product {
   _id: string;

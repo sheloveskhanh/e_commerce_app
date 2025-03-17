@@ -1,10 +1,10 @@
 "use client";
 import { useEffect, useState, useCallback } from "react";
-import ProductList from "./ProductList";
+import ProductList from "../products/ProductList";
 import ProductForm from "./ProductForm";
 import AdminControls from "./AdminControls";
-import CategoryFilter from "./CategoryFilter";
-import SearchBar from "./SearchBar";
+import CategoryFilter from "../../pages/CategoryFilter";
+import SearchBar from "../../pages/SearchBar";
 
 interface Product {
   _id: string;

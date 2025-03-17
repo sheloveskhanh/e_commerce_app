@@ -1,4 +1,4 @@
-import styles from "../styles/ProductForm.module.css";
+import styles from "../../styles/ProductForm.module.css";
 
 interface Product {
   _id?: string;
