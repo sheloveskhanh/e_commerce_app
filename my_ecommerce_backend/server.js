@@ -26,18 +26,24 @@ mongoose
   .then(() => console.log("🔥 MongoDB Connected!"))
   .catch((err) => console.error("MongoDB Connection Error:", err));
 
-app.get("/", (req, res) => {
-  res.send("Hello, Backend is running! 🚀");
-});
-
-app.get("/products", async (req, res) => {
-  try {
-    const products = await Product.find(); 
-    res.json(products);
-  } catch (error) {
-    res.status(500).json({ message: "Failed to fetch products", error });
-  }
-});
+  app.get("/products", async (req, res) => {
+    try {
+      const page = parseInt(req.query.page) || 1;
+      const limit = parseInt(req.query.limit) || 6; 
+      const skip = (page - 1) * limit;
+  
+      const totalProducts = await Product.countDocuments(); // Count total products
+      const products = await Product.find().skip(skip).limit(limit); 
+  
+      res.json({
+        products,
+        currentPage: page,
+        totalPages: Math.ceil(totalProducts / limit)
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch products", error });
+    }
+  });  
 
 app.post("/products", async (req, res) => {
   try {
@@ -76,8 +82,6 @@ app.delete("/products/:id", async (req, res) => {
 app.put("/products/:id", async (req, res) => {
   app.put("/products/:id", async (req, res) => {
     try {
-      console.log(`🛠️ Updating product ${req.params.id} with data:`, req.body); // Debugging Log
-  
       const updatedProduct = await Product.findByIdAndUpdate(
         req.params.id,
         req.body,

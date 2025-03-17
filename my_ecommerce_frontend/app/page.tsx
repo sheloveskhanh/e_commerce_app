@@ -5,6 +5,9 @@ import ProductForm from "./components/ProductForm";
 import CategoryFilter from "./components/CategoryFilter";
 import SearchBar from "./components/SearchBar"; 
 
+// ✅ Define API Base URL
+const API_URL = "http://localhost:5000/products";
+
 interface Product {
   _id: string;
   name: string;
@@ -16,7 +19,7 @@ interface Product {
 
 const categories = [
   "All",
-  "Clothing",
+  "Clothing", 
   "Accessories",
   "Electronics",
   "Home",
@@ -38,62 +41,45 @@ export default function Page() {
   const [isAddFormVisible, setIsAddFormVisible] = useState<boolean>(false);
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
 
-  const imageUrlPattern =
-    /^(https?:\/\/.*\.(png|jpg|jpeg|gif|svg|webp|avif)(\?.*)?)$/i;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const productsPerPage = 6; 
 
-  const isAdmin = true;
+  // ✅ Add back the isAdmin constant
+  const isAdmin = true; 
 
-  const fetchProducts = useCallback(async () => {
+  // ✅ Fix: Correct handleCategoryChange function
+  const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedCategory(event.target.value);
+  };
+
+  const fetchProducts = useCallback(async (page = 1) => {
     try {
-      const response = await fetch("http://localhost:5000/products", {
-        method: "GET",
-        cache: "no-cache",
-      });
+      const response = await fetch(`${API_URL}?page=${page}&limit=${productsPerPage}`);
+
+      if (!response.ok) throw new Error("Failed to fetch products");
+
       const data = await response.json();
-      setProducts(data.products || data);
+
+      setProducts(data.products || []);
+      setCurrentPage(data.currentPage || 1);
+      setTotalPages(data.totalPages || 1);
     } catch (err) {
-      console.error("Error fetching products:", err);
+      console.error("❌ Error fetching products:", err);
     }
   }, []);
 
   useEffect(() => {
-    fetchProducts();
-  }, [fetchProducts]);
-
-  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedCategory(e.target.value);
-  };
-
-  const handleSearchChange = (query: string) => {
-    setSearchQuery(query);
-  };
-
-  const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
-  ) => {
-    const { name, value } = e.target;
-    if (editProduct) {
-      setEditProduct((prev) => ({ ...prev, [name]: value }));
-    } else {
-      setNewProduct((prev) => ({ ...prev, [name]: value }));
-    }
-  };
+    fetchProducts(currentPage);
+  }, [currentPage]);
 
   const handleCreateOrUpdate = async () => {
-    if (!isAdmin) return;
+    if (!editProduct && !newProduct) return;
 
     const payload = editProduct ? { ...editProduct } : { ...newProduct };
     delete payload._id;
 
-    if (!payload.imageUrl || !imageUrlPattern.test(payload.imageUrl.trim())) {
-      alert("⚠️ Please enter a valid image URL.");
-      return;
-    }
-    const url = editProduct
-      ? `http://localhost:5000/products/${editProduct._id}`
-      : "http://localhost:5000/products";
+    const url = editProduct ? `${API_URL}/${editProduct._id}` : API_URL;
     const method = editProduct ? "PUT" : "POST";
 
     try {
@@ -104,21 +90,13 @@ export default function Page() {
       });
 
       if (response.ok) {
-        alert(
-          editProduct
-            ? "✅ Product updated successfully!"
-            : "✅ Product added successfully!"
-        );
+        alert(editProduct ? "✅ Product updated successfully!" : "✅ Product added successfully!");
         setIsAddFormVisible(false);
         setEditProduct(null);
-        await fetchProducts();
+        await fetchProducts(currentPage);
       } else {
         const data = await response.json();
-        alert(
-          `❌ Failed to ${editProduct ? "update" : "add"} product: ${
-            data.message
-          }`
-        );
+        alert(`❌ Failed to ${editProduct ? "update" : "add"} product: ${data.message}`);
       }
     } catch (error) {
       console.error("❌ Error handling product:", error);
@@ -126,23 +104,15 @@ export default function Page() {
     }
   };
 
-  const handleEditClick = (product: Product) => {
-    console.log("Edit button clicked for product:", product);
-    setEditProduct(product);
-    setIsAddFormVisible(true);
-  };
-
   const handleDelete = async (id: string) => {
-    if (!isAdmin) return;
-    if (!window.confirm("⚠️ Are you sure you want to delete this product?"))
-      return;
+    if (!window.confirm("⚠️ Are you sure you want to delete this product?")) return;
+
     try {
-      const response = await fetch(`http://localhost:5000/products/${id}`, {
-        method: "DELETE",
-      });
+      const response = await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+
       if (response.ok) {
         alert("🗑️ Product deleted successfully!");
-        await fetchProducts();
+        await fetchProducts(currentPage);
       } else {
         const data = await response.json();
         alert(`❌ Failed to delete product: ${data.message}`);
@@ -153,51 +123,48 @@ export default function Page() {
     }
   };
 
-  const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
-    (selectedCategory === "All" || product.category === selectedCategory)
-  );
-
   return (
     <div className="container">
       <h1 className="title">Products</h1>
       <div className="searchFilterContainer">
-      <SearchBar searchQuery={searchQuery} onSearchChange={handleSearchChange} />
-
-      <CategoryFilter
-        categories={categories}
-        selectedCategory={selectedCategory}
-        onCategoryChange={handleCategoryChange}
-      />
+        <SearchBar searchQuery={searchQuery} onSearchChange={setSearchQuery} />
+        <CategoryFilter
+          categories={categories}
+          selectedCategory={selectedCategory}
+          onCategoryChange={handleCategoryChange} // ✅ Fixed type issue here
+        />
       </div>
 
       {isAdmin && (
-        <button
-          className={"add-button"}
-          onClick={() => {
-            setEditProduct(null);
-            setIsAddFormVisible(true);
-          }}>
-          ➕ Add Product
+        <button className="addButton" onClick={() => { setEditProduct(null); setIsAddFormVisible(true); }}>
+          Add Product
         </button>
       )}
       
+      {/* ✅ Fix: Added selectedCategory to ProductList */}
       <ProductList
-        products={filteredProducts} 
-        isAdmin={isAdmin}
-        selectedCategory={selectedCategory}
-        onEdit={handleEditClick}
+        products={products}
+        isAdmin={isAdmin} // ✅ Fixed error: added isAdmin
+        selectedCategory={selectedCategory} // ✅ Fixed error: added selectedCategory
+        onEdit={setEditProduct}
         onDelete={handleDelete}
       />
 
+      {/* ✅ Pagination */}
+      <div className="pagination">
+        <button onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))} disabled={currentPage <= 1}>
+          ⬅ Previous
+        </button>
+
+        <span>Page {currentPage} of {totalPages}</span>
+
+        <button onClick={() => setCurrentPage((prev) => (prev < totalPages ? prev + 1 : prev))} disabled={currentPage >= totalPages}>
+          Next ➡
+        </button>
+      </div>
+
       {isAddFormVisible && (
-        <ProductForm
-          product={editProduct || newProduct}
-          categories={categories}
-          onChange={handleChange}
-          onSave={handleCreateOrUpdate}
-          onCancel={() => setIsAddFormVisible(false)}
-        />
+        <ProductForm product={editProduct || newProduct} categories={categories} onChange={handleCreateOrUpdate} onSave={handleCreateOrUpdate} onCancel={() => setIsAddFormVisible(false)} />
       )}
     </div>
   );
