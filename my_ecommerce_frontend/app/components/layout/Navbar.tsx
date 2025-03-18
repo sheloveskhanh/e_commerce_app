@@ -1,11 +1,17 @@
-"use client"; // ✅ This ensures Navbar runs on the client
+"use client";
 
 import Link from "next/link";
 import { useAuth } from "@/app/context/AuthContext";
 import { useRouter } from "next/navigation";
 
 const Navbar = () => {
-  const { user, logout } = useAuth();
+  const auth = useAuth(); // Get the entire context first
+
+  if (!auth) {
+    return null; // Prevent rendering if auth context is not available
+  }
+
+  const { user, logout } = auth; // Destructure only if context exists
   const router = useRouter();
 
   return (
@@ -20,8 +26,8 @@ const Navbar = () => {
         </>
       ) : (
         <>
-          <Link href="/login">Login</Link>
-          <Link href="/register">Register</Link>
+          <Link href="/login" className="nav-link">Login</Link>
+          <Link href="/register" className="nav-link">Register</Link>
         </>
       )}
     </nav>

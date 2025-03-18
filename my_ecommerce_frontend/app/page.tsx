@@ -4,7 +4,6 @@ import ProductList from "@/app/components/products/ProductList";
 import ProductForm from "@/app/components/admin/ProductForm";
 import CategoryFilter from "@/app/pages/CategoryFilter";
 import SearchBar from "@/app/pages/SearchBar";
-import Navbar from "@/app/components/layout/Navbar";
 
 const API_URL = "http://localhost:5000/products";
 
@@ -52,8 +51,6 @@ export default function Page() {
 
   return (
     <div className="container">
-      <Navbar /> {/* ✅ Navbar added */}
-
       <h1 className="title">Products</h1>
 
       <div className="searchFilterContainer">
