@@ -1,10 +1,10 @@
 "use client";
 import { useEffect, useState, useCallback } from "react";
-import ProductList from "./ProductList";
+import ProductList from "../products/ProductList";
 import ProductForm from "./ProductForm";
 import AdminControls from "./AdminControls";
-import CategoryFilter from "./CategoryFilter";
-import SearchBar from "./SearchBar";
+import CategoryFilter from "../../pages/CategoryFilter";
+import SearchBar from "../../pages/SearchBar";
 
 interface Product {
   _id: string;
@@ -69,8 +69,7 @@ const ProductManager: React.FC<ProductManagerProps> = ({ isAdmin, categories }) 
       ? { ...editProduct }
       : { name: "", description: "", price: 1, imageUrl: "", category: "Clothing" };
 
-    if (!editProduct) delete payload._id; // Remove _id for new products
-
+    if (!editProduct) delete payload._id; 
     const imageUrlPattern = /^(https?:\/\/.*\.(png|jpg|jpeg|gif|svg|webp|avif)(\?.*)?)$/i;
 
     if (!payload.imageUrl || !imageUrlPattern.test(payload.imageUrl.trim())) {
@@ -79,30 +78,26 @@ const ProductManager: React.FC<ProductManagerProps> = ({ isAdmin, categories }) 
     }
 
     const url = editProduct
-      ? `http://localhost:5000/products/${editProduct._id}` // ✅ PUT for editing
-      : "http://localhost:5000/products"; // ✅ POST for creating
+      ? `http://localhost:5000/products/${editProduct._id}`
+      : "http://localhost:5000/products"; 
 
     const method = editProduct ? "PUT" : "POST";
 
     try {
-      console.log(`📡 Sending ${method} request to: ${url}`, payload); // ✅ Debugging log
-
       const response = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
 
-      console.log("📨 Response status:", response.status); // ✅ Debugging log
-
       if (response.ok) {
-        await response.json(); // ✅ Process response
+        await response.json();
         alert(editProduct ? "✅ Product updated!" : "✅ Product added!");
 
         setIsAddFormVisible(false);
         setEditProduct(null);
 
-        fetchProducts(); // ✅ Refresh products
+        fetchProducts();
       } else {
         const data = await response.json();
         alert(`❌ Failed to save product: ${data.message}`);

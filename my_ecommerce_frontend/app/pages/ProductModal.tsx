@@ -25,7 +25,6 @@ const ProductModal: React.FC<ProductModalProps> = ({ isOpen, onClose, product, o
     category: "Clothing",
   });
 
-
   useEffect(() => {
     if (isOpen) {
       setProductData(product || {
