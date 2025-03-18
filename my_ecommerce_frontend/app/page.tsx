@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import ProductList from "@/app/components/products/ProductList";
-import ProductForm from "@/app/components/admin/ProductForm";
+import ProductForm from "@/app/components/admin/ProductForm"; 
 import CategoryFilter from "@/app/pages/CategoryFilter";
 import SearchBar from "@/app/pages/SearchBar";
 
@@ -23,16 +23,24 @@ export default function Page() {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [currentProduct, setCurrentProduct] = useState<Partial<Product>>({});
 
-  // ✅ Check user role safely
+
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const userRole = localStorage.getItem("role");
-      setIsAdmin(userRole === "admin");
+      const storedUser = localStorage.getItem("user");
+      console.log("🔍 Checking stored user:", storedUser); // Debugging
+  
+      if (storedUser) {
+        const userData = JSON.parse(storedUser); // ✅ Parse the user object
+        console.log("✅ Parsed User Data:", userData); // Debugging
+        setIsAdmin(userData.role === "admin"); // ✅ Correctly check role inside user
+      }
     }
   }, []);
+  
 
-  // ✅ Fetch products based on category selection
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -49,6 +57,20 @@ export default function Page() {
     fetchProducts();
   }, [selectedCategory]);
 
+  const handleAddProduct = () => {
+    setCurrentProduct({}); 
+    setIsFormOpen(true);
+  };
+
+  const handleSaveProduct = () => {
+    console.log("Product saved:", currentProduct);
+    setIsFormOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsFormOpen(false);
+  };
+
   return (
     <div className="container">
       <h1 className="title">Products</h1>
@@ -58,11 +80,33 @@ export default function Page() {
         <CategoryFilter
           categories={categories}
           selectedCategory={selectedCategory}
-          onCategoryChange={(event) => setSelectedCategory(event.target.value)} // ✅ Fixed event handling
+          onCategoryChange={(event) => setSelectedCategory(event.target.value)}
         />
       </div>
 
-      <ProductList products={products} isAdmin={isAdmin} selectedCategory={selectedCategory} onEdit={() => {}} onDelete={() => {}} />
+      {isAdmin && (
+        <button className="addButton" onClick={handleAddProduct}>
+          Add Product
+        </button>
+      )}
+
+      <ProductList 
+        products={products} 
+        isAdmin={isAdmin} 
+        selectedCategory={selectedCategory} 
+        onEdit={() => {}} 
+        onDelete={() => {}} 
+      />
+
+      {isFormOpen && (
+        <ProductForm 
+          product={currentProduct} 
+          categories={categories} 
+          onChange={(e) => setCurrentProduct({ ...currentProduct, [e.target.name]: e.target.value })} 
+          onSave={handleSaveProduct} 
+          onCancel={handleCancel} 
+        />
+      )}
     </div>
   );
 }
