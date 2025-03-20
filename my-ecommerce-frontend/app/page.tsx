@@ -74,53 +74,53 @@ export default function Page() {
   
   useEffect(() => {
     fetchProducts(currentPage);
-  }, [fetchProducts, currentPage, searchQuery]); 
+  }, [fetchProducts, currentPage]); 
+
+  // ✅ Search filtering applied on the client-side
+  const filteredProducts = products.filter((product) =>
+    product.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
+    (selectedCategory === "All" || product.category === selectedCategory)
+  );
 
   const handleCreateOrUpdate = async () => {
-    if (!editProduct && !newProduct) return;
-  
-    const payload: Product = {
-      _id: editProduct?._id || crypto.randomUUID(), // ✅ Ensure _id is a string
-      name: editProduct?.name || newProduct.name || "",
-      description: editProduct?.description || newProduct.description || "",
-      price: editProduct?.price || newProduct.price || 0,
-      imageUrl: editProduct?.imageUrl || newProduct.imageUrl || "",
-      category: editProduct?.category || newProduct.category || "Clothing",
+    if (!newProduct.name || !newProduct.description || !newProduct.price || !newProduct.imageUrl) {
+      alert("⚠️ All fields are required!");
+      return;
+    }
+
+    const payload = {
+      name: newProduct.name,
+      description: newProduct.description,
+      price: newProduct.price,
+      imageUrl: newProduct.imageUrl,
+      category: newProduct.category || "Clothing",
     };
-  
+
     const url = editProduct ? `${API_URL}/${editProduct._id}` : API_URL;
     const method = editProduct ? "PUT" : "POST";
-  
+
     try {
       const response = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-  
-      if (response.ok) {
-        alert(editProduct ? "✅ Product updated successfully!" : "✅ Product added successfully!");
-        setIsFormVisible(false);
-        setEditProduct(null);
-  
-        if (editProduct) {
-          setProducts((prevProducts) =>
-            prevProducts.map((p) => (p._id === editProduct._id ? { ...payload } : p))
-          );
-        } else {
-          const newAddedProduct = await response.json();
-          setProducts((prevProducts) => [...prevProducts, newAddedProduct]);
-        }
-      } else {
-        const data = await response.json();
-        alert(`❌ Failed to ${editProduct ? "update" : "add"} product: ${data.message}`);
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Unknown error");
       }
+
+      alert(editProduct ? "✅ Product updated!" : "✅ Product added!");
+      setIsFormVisible(false);
+      setEditProduct(null);
+      await fetchProducts();
     } catch (error) {
       console.error("❌ Error handling product:", error);
-      alert("❌ Something went wrong!");
+      alert("❌ Failed to add product: " + error.message);
     }
   };
-  
+
   const handleDelete = async (id: string) => {
     if (!window.confirm("⚠️ Are you sure you want to delete this product?")) return;
 
@@ -145,8 +145,8 @@ export default function Page() {
     <div className="container">
       <h1 className="title">Products</h1>
       <div className="searchFilterContainer">
-      <SearchBar searchQuery={searchQuery} onSearchChange={setSearchQuery} />
-      <CategoryFilter
+        <SearchBar searchQuery={searchQuery} onSearchChange={setSearchQuery} />
+        <CategoryFilter
           categories={categories}
           selectedCategory={selectedCategory}
           onCategoryChange={handleCategoryChange} 
@@ -160,7 +160,7 @@ export default function Page() {
       )}
       
       <ProductList
-        products={products}
+        products={filteredProducts} // ✅ Apply search filtering
         isAdmin={isAdmin} 
         selectedCategory={selectedCategory} 
         onEdit={(product) => { setEditProduct(product); setIsFormVisible(true); }}
