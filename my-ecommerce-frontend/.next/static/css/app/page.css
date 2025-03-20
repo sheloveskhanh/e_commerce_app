@@ -1,0 +1,251 @@
+/*!*****************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[3]!./app/styles/ProductCard.module.css ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************/
+.ProductCard_productCard__iFgUj {
+  width: 250px; 
+  height: 350px; 
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #fff;
+  transition: transform 0.3s, box-shadow 0.3s;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 300px;
+  margin: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.ProductCard_productCard__iFgUj:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.ProductCard_productImageWrapper__VO9Fq {
+  width: 100%;
+  height: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: #f5f5f5;
+}
+
+.ProductCard_productImage__WqEc0 {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ProductCard_productInfo__eEkTl {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+}
+
+.ProductCard_productLeft__tKxSi {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ProductCard_productName__9CoGa {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.ProductCard_productDescription__el8u_ {
+  color: #555;
+  font-size: 0.9rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ProductCard_productRight__hM98L {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.ProductCard_productPrice__Z9Qb_ {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #020202;
+  margin: 0;
+}
+
+.ProductCard_adminButtons__Gzy63 {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.ProductCard_editButton__T_mDX {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.ProductCard_editButton__T_mDX:hover {
+  background-color: #0056b3;
+}
+
+.ProductCard_deleteButton__lCc_1 {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.ProductCard_deleteButton__lCc_1:hover {
+  background-color: #b02a37;
+}
+
+/*!*****************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[3]!./app/styles/ProductList.module.css ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************/
+.ProductList_productGrid__0pSyU {
+  display: flex;
+  flex-wrap: wrap; /* Allows wrapping to the next line if necessary */
+  gap: 20px; /* Adjust spacing between items */
+  justify-content: center; /* Align items to center */
+  align-items: stretch;
+  padding: 20px;
+  max-width: 1600px;
+  margin: auto;
+}
+
+.ProductList_noProducts__brjri {
+  text-align: center;
+  font-size: 1.5rem;
+  color: #555;
+  grid-column: span 2;
+}
+/*!*****************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[3]!./app/styles/ProductForm.module.css ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************/
+.ProductForm_modal__oWrDS {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ProductForm_modalContent__gfXsq {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  width: 400px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.ProductForm_modalButtons__gG42S {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.ProductForm_modalContent__gfXsq select,
+.ProductForm_modalContent__gfXsq input,
+.ProductForm_modalContent__gfXsq textarea {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.ProductForm_modalContent__gfXsq select {
+  margin-bottom: 15px;
+}
+
+.ProductForm_saveButton__Vz5gD {
+  background-color: #0070f3;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.ProductForm_saveButton__Vz5gD:hover {
+  background-color: #0056c1;
+}
+
+.ProductForm_cancelButton__KyQb_ {
+  background-color: #ba1b28;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.ProductForm_cancelButton__KyQb_:hover {
+  background-color: #8a101f;
+}
+/*!********************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[3]!./app/styles/CategoryFilter.module.css ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************/
+.CategoryFilter_categoryContainer__Vvd07 {
+  display: flex;
+  justify-content: flex-end; /* ✅ Push dropdown to the right */
+  margin-left: 10px;
+}
+
+.CategoryFilter_categoryDropdown__1a1Ho {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  outline: none;
+  cursor: pointer;
+}
+
+.CategoryFilter_categoryDropdown__1a1Ho option {
+  padding: 10px;
+  cursor: pointer;
+}
+/*!***************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[3]!./app/styles/SearchBar.module.css ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************/
+.SearchBar_searchContainer__v_9w8 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 600px;
+  padding: 10px 0;
+}
+
+.SearchBar_searchWrapper__pgJcy {
+  position: relative;
+  flex-grow: 1;
+}
+
+.SearchBar_searchBar__F_uIs {
+  width: 100%;
+  padding: 12px 12px 12px 35px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  outline: none;
+}
+

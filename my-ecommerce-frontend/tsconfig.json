@@ -1,5 +1,21 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@components/*": [
+        "app/components/*"
+      ],
+      "@products/*": [
+        "app/products/*"
+      ],
+      "@layout/*": [
+        "app/layout/*"
+      ],
+      "@styles/*": [
+        "app/styles/*"
+      ]
+    },
+    "module": "esnext",
     "target": "ES2017",
     "lib": [
       "dom",
@@ -16,13 +32,11 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "plugins": [{ "name": "next" }],
-    "baseUrl": ".",  // ✅ ADD THIS LINE
-    "paths": {
-      "@components/*": ["app/components/*"],
-      "@products/*": ["app/products/*"],
-      "@layout/*": ["app/layout/*"]
-    }
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "include": [
     "next-env.d.ts",
