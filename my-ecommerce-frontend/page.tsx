@@ -1,19 +1,9 @@
 "use client";
-<<<<<<< HEAD:my-ecommerce-frontend/page.tsx
-import { useEffect, useState } from "react";
-import ProductList from "@/components/products/ProductList";
-import ProductForm from "@/components/admin/ProductForm";
-import CategoryFilter from "@/pages/CategoryFilter";
-import SearchBar from "@/pages/SearchBar";
-
-=======
 import { useEffect, useState, useCallback } from "react";
 import ProductList from "@components/ProductList";
 import ProductForm from "./components/admin/ProductForm";
 import CategoryFilter from "../app/pages/CategoryFilter";
 import SearchBar from "..app/pages/SearchBar";
-// ✅ Define API Base URL
->>>>>>> 6fbd77492d35f149cfe0f3c5d6f3fb4b770d4878:my_ecommerce_frontend/app/page.tsx
 
 const API_URL = "http://localhost:5000/products";
 

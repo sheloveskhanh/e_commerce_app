@@ -10,20 +10,6 @@
     "skipLibCheck": true,
     "strict": false,
     "noEmit": true,
-<<<<<<< HEAD:my-ecommerce-frontend/tsconfig.json
-    "incremental": true,
-    "module": "esnext",
-    "esModuleInterop": true,
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ]
-=======
     "esModuleInterop": true,
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
@@ -37,7 +23,6 @@
       "@products/*": ["app/products/*"],
       "@layout/*": ["app/layout/*"]
     }
->>>>>>> 6fbd77492d35f149cfe0f3c5d6f3fb4b770d4878:my_ecommerce_frontend/tsconfig.json
   },
   "include": [
     "next-env.d.ts",
