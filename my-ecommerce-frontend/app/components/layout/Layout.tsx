@@ -1,11 +1,9 @@
 "use client";
 
-import { AuthProvider } from "@/app/context/AuthContext"; // ✅ Import AuthProvider
-import Navbar from "@/app/components/layout/Navbar"; // ✅ Import Navbar
+import { AuthProvider } from "../../context/AuthContext"; 
+import Navbar from "../../components/layout/Navbar"; 
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  console.log("✅ layout.tsx is rendering!"); // Debugging
-
   return (
     <AuthProvider>
       <Navbar /> 

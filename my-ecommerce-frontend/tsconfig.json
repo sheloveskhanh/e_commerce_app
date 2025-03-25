@@ -6,7 +6,7 @@
       "@products/*": ["app/products/*"],
       "@layout/*": ["app/layout/*"],
       "@styles/*": ["app/styles/*"],
-      "@context/*": ["app/context/*"]  // ✅ Add this line
+      "@context/*": ["app/context/*"]  
     },
     "module": "esnext",
     "target": "ES2017",
