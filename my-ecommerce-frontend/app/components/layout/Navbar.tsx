@@ -3,34 +3,43 @@
 import Link from "next/link";
 import { useAuth } from "../../context/AuthContext";
 import { useRouter } from "next/navigation";
+import styles from "@styles/Navbar.module.css"; 
 
 const Navbar = () => {
-  const auth = useAuth(); 
+  const auth = useAuth();
 
-  if (!auth) {
-    return null; 
-  }
+  if (!auth) return null;
 
-  const { user, logout } = auth; 
+  const { user, logout } = auth;
   const router = useRouter();
 
   return (
-    <nav className="navbar">
-      <Link href="/" className="nav-link">Home</Link>
-      <Link href="/products" className="nav-link">Products</Link>
+    <div className={styles.navbarContainer}>
+      <nav className={styles.navbar}>
+        <ul className={styles.navLinks}>
+          <li><Link href="/">Home</Link></li>
+          <li><Link href="/products">Products</Link></li>
 
-      {user ? (
-        <>
-          {user.role === "admin" && <Link href="/admin" className="nav-link">Admin</Link>}
-          <button className="nav-button" onClick={() => { logout(); router.push("/"); }}>Logout</button>
-        </>
-      ) : (
-        <>
-          <Link href="/login" className="nav-link">Login</Link>
-          <Link href="/register" className="nav-link">Register</Link>
-        </>
-      )}
-    </nav>
+          {user ? (
+            <>
+              {user.role === "admin" && (
+                <li><Link href="/admin">Admin</Link></li>
+              )}
+              <li>
+                <button onClick={() => { logout(); router.push("/"); }}>
+                  Logout
+                </button>
+              </li>
+            </>
+          ) : (
+            <>
+              <li><Link href="/login">Login</Link></li>
+              <li><Link href="/register">Register</Link></li>
+            </>
+          )}
+        </ul>
+      </nav>
+    </div>
   );
 };
 

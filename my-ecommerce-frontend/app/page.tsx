@@ -77,50 +77,56 @@ export default function Page() {
     fetchProducts(currentPage);
   }, [fetchProducts, currentPage]); 
 
-  // ✅ Search filtering applied on the client-side
   const filteredProducts = products.filter((product) =>
     product.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
     (selectedCategory === "All" || product.category === selectedCategory)
   );
 
   const handleCreateOrUpdate = async () => {
-    if (!newProduct.name || !newProduct.description || !newProduct.price || !newProduct.imageUrl) {
+    const productData = editProduct || newProduct;
+  
+    if (
+      !productData?.name ||
+      !productData?.description ||
+      !productData?.price ||
+      !productData?.imageUrl
+    ) {
       alert("⚠️ All fields are required!");
       return;
     }
-
+  
     const payload = {
-      name: newProduct.name,
-      description: newProduct.description,
-      price: newProduct.price,
-      imageUrl: newProduct.imageUrl,
-      category: newProduct.category || "Clothing",
+      name: productData.name,
+      description: productData.description,
+      price: productData.price,
+      imageUrl: productData.imageUrl,
+      category: productData.category || "Clothing",
     };
-
+  
     const url = editProduct ? `${API_URL}/${editProduct._id}` : API_URL;
     const method = editProduct ? "PUT" : "POST";
-
+  
     try {
       const response = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-
+  
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || "Unknown error");
       }
-
+  
       alert(editProduct ? "✅ Product updated!" : "✅ Product added!");
       setIsFormVisible(false);
       setEditProduct(null);
       await fetchProducts();
-    } catch (error) {
+    } catch (error: any) {
       console.error("❌ Error handling product:", error);
-      alert("❌ Failed to add product: " + error.message);
+      alert("❌ Failed to save product: " + error.message);
     }
-  };
+  };  
 
   const handleDelete = async (id: string) => {
     if (!window.confirm("⚠️ Are you sure you want to delete this product?")) return;
@@ -162,7 +168,7 @@ export default function Page() {
       )}
       
       <ProductList
-        products={filteredProducts} // ✅ Apply search filtering
+        products={filteredProducts} 
         isAdmin={isAdmin} 
         selectedCategory={selectedCategory} 
         onEdit={(product) => { setEditProduct(product); setIsFormVisible(true); }}
