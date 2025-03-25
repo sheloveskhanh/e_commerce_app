@@ -2,26 +2,15 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@components/*": [
-        "app/components/*"
-      ],
-      "@products/*": [
-        "app/products/*"
-      ],
-      "@layout/*": [
-        "app/layout/*"
-      ],
-      "@styles/*": [
-        "app/styles/*"
-      ]
+      "@components/*": ["app/components/*"],
+      "@products/*": ["app/products/*"],
+      "@layout/*": ["app/layout/*"],
+      "@styles/*": ["app/styles/*"],
+      "@context/*": ["app/context/*"]  // ✅ Add this line
     },
     "module": "esnext",
     "target": "ES2017",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
@@ -32,19 +21,8 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ]
+    "plugins": [{ "name": "next" }]
   },
-  "include": [
-    "next-env.d.ts",
-    ".next/types/**/*.ts",
-    "**/*.ts",
-    "**/*.tsx"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["next-env.d.ts", ".next/types/**/*.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
 }

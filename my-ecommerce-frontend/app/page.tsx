@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState, useCallback } from "react";
+import Navbar from "@components/layout/Navbar"; // ✅ Import Navbar
 import ProductList from "@components/products/ProductList";  
 import ProductForm from "@components/admin/ProductForm";  
 import CategoryFilter from "@components/pages/CategoryFilter";
@@ -143,6 +144,7 @@ export default function Page() {
 
   return (
     <div className="container">
+
       <h1 className="title">Products</h1>
       <div className="searchFilterContainer">
         <SearchBar searchQuery={searchQuery} onSearchChange={setSearchQuery} />

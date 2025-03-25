@@ -1,17 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { useAuth } from "@/app/context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import { useRouter } from "next/navigation";
 
 const Navbar = () => {
-  const auth = useAuth(); // Get the entire context first
+  const auth = useAuth(); 
 
   if (!auth) {
-    return null; // Prevent rendering if auth context is not available
+    return null; 
   }
 
-  const { user, logout } = auth; // Destructure only if context exists
+  const { user, logout } = auth; 
   const router = useRouter();
 
   return (
