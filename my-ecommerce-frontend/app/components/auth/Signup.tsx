@@ -10,9 +10,8 @@ const Signup = () => {
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Mock signup (replace with API request)
     console.log("User registered:", { email, password });
-    router.push("/login"); // Redirect to login page
+    router.push("/login"); 
   };
 
   return (

@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState, useCallback } from "react";
-import Navbar from "@components/layout/Navbar"; // ✅ Import Navbar
 import ProductList from "@components/products/ProductList";  
 import ProductForm from "@components/admin/ProductForm";  
 import CategoryFilter from "@components/pages/CategoryFilter";
@@ -52,9 +51,7 @@ export default function Page() {
   };
 
   const fetchProducts = useCallback(async (page = 1) => {
-    try {
-      console.log(`Fetching from: ${API_URL}?page=${page}&limit=${productsPerPage}`);
-  
+    try {  
       const response = await fetch(`${API_URL}?page=${page}&limit=${productsPerPage}`, {
         method: "GET",
         headers: {
