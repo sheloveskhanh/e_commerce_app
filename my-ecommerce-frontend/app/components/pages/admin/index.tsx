@@ -3,7 +3,7 @@ import AdminGuard from "../../auth/AdminGuard";
 import ProductManager from "../../admin/ProductManager";
 
 const AdminPage = () => {
-  const { user } = useAuth(); // ✅ Use the safe `useAuth()` hook
+  const { user } = useAuth();
 
   if (!user || user.role !== "admin") {
     return <h2>Access Denied</h2>;

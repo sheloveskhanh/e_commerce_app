@@ -3,14 +3,21 @@
 import Link from "next/link";
 import { useAuth } from "../../context/AuthContext";
 import { useRouter } from "next/navigation";
-import styles from "@styles/Navbar.module.css"; 
+import { useState } from "react";
+import Modal from "../../components/login_modal/Modal"; 
+import Login from "../../components/auth/Login"; 
+import Signup from "../../components/auth/Signup"; 
+import styles from "@styles/Navbar.module.css";
+
 
 const Navbar = () => {
   const auth = useAuth();
-  if (!auth) return null;
-
-  const { user, logout } = auth;
   const router = useRouter();
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showRegisterModal, setShowRegisterModal] = useState(false);
+
+  if (!auth) return null;
+  const { user, logout } = auth;
 
   return (
     <div className={styles.navbarContainer}>
@@ -22,7 +29,6 @@ const Navbar = () => {
           <li>
             <Link href="/products">Products</Link>
           </li>
-
           {user ? (
             <>
               {user.role === "admin" && (
@@ -32,6 +38,7 @@ const Navbar = () => {
               )}
               <li>
                 <button
+                  className={styles.navButton}
                   onClick={() => {
                     logout();
                     router.push("/");
@@ -44,15 +51,31 @@ const Navbar = () => {
           ) : (
             <>
               <li>
-                <Link href="/login">Login</Link>
+                <button className={styles.navButton} onClick={() => setShowLoginModal(true)}>
+                  Login
+                </button>
               </li>
               <li>
-                <Link href="/register">Register</Link>
+                <button className={styles.navButton} onClick={() => setShowRegisterModal(true)}>
+                  Register
+                </button>
               </li>
             </>
           )}
         </ul>
       </nav>
+
+      {showLoginModal && (
+        <Modal onClose={() => setShowLoginModal(false)}>
+          <Login />
+        </Modal>
+      )}
+
+      {showRegisterModal && (
+        <Modal onClose={() => setShowRegisterModal(false)}>
+          <Signup />
+        </Modal>
+      )}
     </div>
   );
 };

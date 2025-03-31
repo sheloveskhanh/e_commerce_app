@@ -6,7 +6,8 @@
       "@products/*": ["app/products/*"],
       "@layout/*": ["app/layout/*"],
       "@styles/*": ["app/styles/*"],
-      "@context/*": ["app/context/*"]  
+      "@context/*": ["app/context/*"],
+      "@lib/*": ["lib/*"]
     },
     "module": "esnext",
     "target": "ES2017",

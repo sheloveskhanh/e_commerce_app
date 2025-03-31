@@ -1,47 +1,82 @@
 "use client";
 
 import { createContext, useState, useEffect, useContext, ReactNode } from "react";
+import { auth } from "/firebaseConfig";
+import {
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
 
 interface User {
-  role: string;
-  // add more user fields if needed (e.g., name, email)
+  uid: string;
+  email: string | null;
 }
 
 interface AuthContextType {
   user: User | null;
-  login: (userData: User) => void;
-  logout: () => void;
+  login: (email: string, password: string) => Promise<void>;
+  logout: () => Promise<void>;
+  // Optionally, add a register method if needed:
+  register?: (email: string, password: string) => Promise<void>;
 }
 
-export const AuthContext = createContext<AuthContextType | null>(null);
+const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
 
-  // Load user from localStorage on mount
+  // Listen for authentication state changes
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const storedUser = localStorage.getItem("user");
-      if (storedUser) {
-        setUser(JSON.parse(storedUser));
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      if (firebaseUser) {
+        // Set user state from Firebase user
+        setUser({ uid: firebaseUser.uid, email: firebaseUser.email });
+      } else {
+        setUser(null);
       }
-    }
+    });
+    return () => unsubscribe();
   }, []);
 
-  // Login function: store user data in localStorage and update state
-  const login = (userData: User) => {
-    localStorage.setItem("user", JSON.stringify(userData));
-    setUser(userData);
+  // Login function using Firebase
+  const login = async (email: string, password: string) => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const firebaseUser = userCredential.user;
+      setUser({ uid: firebaseUser.uid, email: firebaseUser.email });
+    } catch (error) {
+      console.error("Login error:", error);
+      throw error;
+    }
   };
 
-  // Logout function: remove user data and update state
-  const logout = () => {
-    localStorage.removeItem("user");
-    setUser(null);
+  // Logout function using Firebase
+  const logout = async () => {
+    try {
+      await signOut(auth);
+      setUser(null);
+    } catch (error) {
+      console.error("Logout error:", error);
+      throw error;
+    }
+  };
+
+  // Optional: Registration function
+  const register = async (email: string, password: string) => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const firebaseUser = userCredential.user;
+      setUser({ uid: firebaseUser.uid, email: firebaseUser.email });
+    } catch (error) {
+      console.error("Registration error:", error);
+      throw error;
+    }
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, register }}>
       {children}
     </AuthContext.Provider>
   );
@@ -50,7 +85,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    console.error("❌ ERROR: useAuth() is being used outside AuthProvider!");
     throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
