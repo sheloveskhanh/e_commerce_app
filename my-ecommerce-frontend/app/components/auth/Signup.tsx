@@ -2,16 +2,28 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@firebaseConfig"; 
 
-const Signup = () => {
+interface SignupProps {
+  onClose: () => void;
+}
+
+const Signup: React.FC<SignupProps> = ({ onClose }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("User registered:", { email, password });
-    router.push("/login"); 
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      console.log("User registered:", userCredential.user);
+      onClose(); // close modal if using modal
+    } catch (error) {
+      console.error("Signup error:", error);
+      alert("Signup failed: " + error.message);
+    }
   };
 
   return (

@@ -7,7 +7,8 @@
       "@layout/*": ["app/layout/*"],
       "@styles/*": ["app/styles/*"],
       "@context/*": ["app/context/*"],
-      "@lib/*": ["lib/*"]
+      "@lib/*": ["lib/*"],
+      "@firebaseConfig": ["firebaseConfig.ts"]
     },
     "module": "esnext",
     "target": "ES2017",

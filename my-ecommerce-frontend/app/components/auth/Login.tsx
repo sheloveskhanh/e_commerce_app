@@ -13,12 +13,15 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (email === "admin@example.com" && password === "password123") {
-      login({ role: "admin" });
-      router.push("/admin");
-    } else {
-      login({ role: "customer" });
-      router.push("/");
+    try {
+      await login(email, password);
+      if (email === "admin@example.com" && password === "password123") {
+        router.push("/admin");
+      } else {
+        router.push("/");
+      }
+    } catch (error: any) {
+      console.error("Login failed:", error);
     }
   };
 

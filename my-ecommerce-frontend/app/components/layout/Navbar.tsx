@@ -4,11 +4,10 @@ import Link from "next/link";
 import { useAuth } from "../../context/AuthContext";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import Modal from "../../components/login_modal/Modal"; 
-import Login from "../../components/auth/Login"; 
-import Signup from "../../components/auth/Signup"; 
+import Modal from "../../components/login_modal/Modal";
+import Login from "../../components/auth/Login";
+import Signup from "../../components/auth/Signup";
 import styles from "@styles/Navbar.module.css";
-
 
 const Navbar = () => {
   const auth = useAuth();
@@ -17,6 +16,7 @@ const Navbar = () => {
   const [showRegisterModal, setShowRegisterModal] = useState(false);
 
   if (!auth) return null;
+
   const { user, logout } = auth;
 
   return (
@@ -31,6 +31,7 @@ const Navbar = () => {
           </li>
           {user ? (
             <>
+              {/* Only show the Admin link if the user's role is "admin" */}
               {user.role === "admin" && (
                 <li>
                   <Link href="/admin">Admin</Link>
@@ -42,8 +43,7 @@ const Navbar = () => {
                   onClick={() => {
                     logout();
                     router.push("/");
-                  }}
-                >
+                  }}>
                   Logout
                 </button>
               </li>
@@ -51,12 +51,16 @@ const Navbar = () => {
           ) : (
             <>
               <li>
-                <button className={styles.navButton} onClick={() => setShowLoginModal(true)}>
+                <button
+                  className={styles.navButton}
+                  onClick={() => setShowLoginModal(true)}>
                   Login
                 </button>
               </li>
               <li>
-                <button className={styles.navButton} onClick={() => setShowRegisterModal(true)}>
+                <button
+                  className={styles.navButton}
+                  onClick={() => setShowRegisterModal(true)}>
                   Register
                 </button>
               </li>
@@ -73,7 +77,7 @@ const Navbar = () => {
 
       {showRegisterModal && (
         <Modal onClose={() => setShowRegisterModal(false)}>
-          <Signup />
+          <Signup onClose={() => setShowRegisterModal(false)} />
         </Modal>
       )}
     </div>
