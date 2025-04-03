@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "@context/AuthContext";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import Modal from "../../components/login_modal/Modal";
-import Login from "../../components/auth/Login";
-import Signup from "../../components/auth/Signup";
+import Modal from "@components/modal/Modal";
+import Login from "@components/auth/Login";
+import Signup from "@components/auth/Signup";
 import styles from "@styles/Navbar.module.css";
 
 const Navbar = () => {
