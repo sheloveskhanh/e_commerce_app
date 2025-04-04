@@ -4,6 +4,8 @@ import ProductList from "@components/products/ProductList";
 import ProductForm from "@components/admin/ProductForm";  
 import CategoryFilter from "@components/pages/CategoryFilter";
 import SearchBar from "@components/pages/SearchBar";  
+import { useAuth } from "@context/AuthContext";
+
 
 const API_URL = "http://localhost:5000/products";
 
@@ -44,8 +46,9 @@ export default function Page() {
   const [totalPages, setTotalPages] = useState(1);
   const productsPerPage = 6; 
 
-  const isAdmin = true; 
-
+  const { user } = useAuth();
+  const isAdmin = user?.role === "admin";
+  
   const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedCategory(event.target.value);
   };

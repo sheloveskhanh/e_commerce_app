@@ -31,7 +31,6 @@ const Navbar = () => {
           </li>
           {user ? (
             <>
-              {/* Only show the Admin link if the user's role is "admin" */}
               {user.role === "admin" && (
                 <li>
                   <Link href="/admin">Admin</Link>

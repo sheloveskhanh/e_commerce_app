@@ -19,7 +19,7 @@ const Signup: React.FC<SignupProps> = ({ onClose }) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       console.log("User registered:", userCredential.user);
-      onClose(); // close modal if using modal
+      onClose(); 
     } catch (error) {
       console.error("Signup error:", error);
       alert("Signup failed: " + error.message);
