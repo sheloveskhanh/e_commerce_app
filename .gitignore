@@ -4,3 +4,5 @@ node_modules
 .next/**/*.trace
 .next/**/*.json
 /my-ecommerce-frontend/.next
+
+

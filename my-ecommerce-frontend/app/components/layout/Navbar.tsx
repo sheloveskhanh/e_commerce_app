@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useAuth } from "@context/AuthContext";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useCart } from "@context/CartContext";
+
 import Modal from "@components/modal/Modal";
 import Login from "@components/auth/Login";
 import Signup from "@components/auth/Signup";
@@ -11,13 +13,15 @@ import styles from "@styles/Navbar.module.css";
 
 const Navbar = () => {
   const auth = useAuth();
+  const { cart } = useCart();
   const router = useRouter();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
 
   if (!auth) return null;
-
   const { user, logout } = auth;
+
+  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
     <div className={styles.navbarContainer}>
@@ -29,6 +33,9 @@ const Navbar = () => {
           <li>
             <Link href="/products">Products</Link>
           </li>
+          <li>
+            <Link href="/cart">Cart ({totalItems})</Link>
+          </li>
           {user ? (
             <>
               {user.role === "admin" && (
@@ -37,12 +44,7 @@ const Navbar = () => {
                 </li>
               )}
               <li>
-                <button
-                  className={styles.navButton}
-                  onClick={() => {
-                    logout();
-                    router.push("/");
-                  }}>
+                <button className={styles.navButton} onClick={() => { logout(); router.push("/"); }}>
                   Logout
                 </button>
               </li>
@@ -50,16 +52,12 @@ const Navbar = () => {
           ) : (
             <>
               <li>
-                <button
-                  className={styles.navButton}
-                  onClick={() => setShowLoginModal(true)}>
+                <button className={styles.navButton} onClick={() => setShowLoginModal(true)}>
                   Login
                 </button>
               </li>
               <li>
-                <button
-                  className={styles.navButton}
-                  onClick={() => setShowRegisterModal(true)}>
+                <button className={styles.navButton} onClick={() => setShowRegisterModal(true)}>
                   Register
                 </button>
               </li>

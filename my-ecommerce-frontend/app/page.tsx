@@ -6,7 +6,6 @@ import CategoryFilter from "@components/pages/CategoryFilter";
 import SearchBar from "@components/pages/SearchBar";  
 import { useAuth } from "@context/AuthContext";
 
-
 const API_URL = "http://localhost:5000/products";
 
 interface Product {
@@ -44,7 +43,7 @@ export default function Page() {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const productsPerPage = 6; 
+  const productsPerPage = 50; 
 
   const { user } = useAuth();
   const isAdmin = user?.role === "admin";
